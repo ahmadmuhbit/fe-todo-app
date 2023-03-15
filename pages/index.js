@@ -1,6 +1,8 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
+import { MainLayout } from '@/layouts/MainLayout'
+import { HomePage } from '@/components/pages/HomePages'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -13,9 +15,9 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className='h-screen w-full bg-sky-400 flex items-center justify-center'>
-        <h1 className='text-3xl text-white font-bold'>Hello NextJS</h1>
-      </div>
+      <MainLayout>
+        <HomePage />
+      </MainLayout>
     </>
   )
 }
