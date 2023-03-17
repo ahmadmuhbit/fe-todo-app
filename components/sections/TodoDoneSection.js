@@ -1,19 +1,18 @@
-import axios from "axios"
 import { useEffect, useState } from "react"
 import { TodoCard } from "../cards/TodoCard"
+import useSWR from 'swr'
+import fetcher from "@/utils/fetcher"
 
 export const TodoDoneSection = () => {
 
     const [todos, setTodos] = useState([])
-
-    const fetchTodo = async () => {
-        const resp = await axios.get('http://localhost:8000/api/v1/todos')
-        setTodos(() => resp?.data?.data)
-    }
+    const {data: todoData, error, mutate} = useSWR('/todos', fetcher)
 
     useEffect(() => {
-        fetchTodo()
-    }, [])
+        if (todoData?.data) {
+            setTodos(() => todoData?.data?.filter(item => item?.is_complete === true))
+        }
+    }, [todoData])
 
     return (
         <div className="p-5 flex flex-col gap-5">
