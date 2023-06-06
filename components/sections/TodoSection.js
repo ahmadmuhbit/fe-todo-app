@@ -19,7 +19,7 @@ export const TodoSection = () => {
             <h1 className="text-3xl">Todo</h1>
             <div className="flex flex-col gap-2">
                 {todos?.length > 0 ? todos?.map((item, idx) => (
-                    <TodoCard key={idx} data={item} />
+                    <TodoCard key={idx} data={item} mutate={mutate} />
                 ))
                 :
                 <div>

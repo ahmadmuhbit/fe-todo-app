@@ -1,6 +1,8 @@
+import { updateTodo } from "@/service/todo/todo.service"
 import Swal from "sweetalert2"
+import { mutate } from "swr"
 
-export const TodoCard = ({isDone = false, data = null}) => {
+export const TodoCard = ({isDone = false, data = null, mutate}) => {
 
     const handleEditTodo = () => {
         // alert('melakukan edit todo')
@@ -13,22 +15,54 @@ export const TodoCard = ({isDone = false, data = null}) => {
     }
 
     const handleDoneTodo = () => {
-        // alert('memindahkan todo ke done section')
-        Swal.fire({
-            title: 'Sukses!',
-            text: 'Memindahkan todo ke done section',
-            icon: 'success',
-            confirmButtonText: 'Ok'
+        const payload = {
+            name: data?.name,
+            note: data?.note,
+            is_complete: true
+        }
+        updateTodo(payload, data?.id)
+        .then(resp => {
+            mutate()
+            Swal.fire({
+                title: 'Sukses!',
+                text: resp?.message,
+                icon: 'success',
+                confirmButtonText: 'Ok'
+            })
+        })
+        .catch(err => {
+            Swal.fire({
+                title: 'Gagal!',
+                text: err?.response?.data?.message || err?.message,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            })
         })
     }
 
     const handleReturnTodo = () => {
-        // alert('memindahkan todo kembali ke list todo')
-        Swal.fire({
-            title: 'Sukses!',
-            text: 'Memindahkan todo kembali ke list todo',
-            icon: 'success',
-            confirmButtonText: 'Ok'
+        const payload = {
+            name: data?.name,
+            note: data?.note,
+            is_complete: false
+        }
+        updateTodo(payload, data?.id)
+        .then(resp => {
+            mutate()
+            Swal.fire({
+                title: 'Sukses!',
+                text: resp?.message,
+                icon: 'success',
+                confirmButtonText: 'Ok'
+            })
+        })
+        .catch(err => {
+            Swal.fire({
+                title: 'Gagal!',
+                text: err?.response?.data?.message || err?.message,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            })
         })
     }
 
