@@ -1,10 +1,13 @@
 import { TodoSection } from "../sections/TodoSection"
 import { TodoDoneSection } from "../sections/TodoDoneSection"
 import { AddTodoModal } from "../modals/AddTodoModal"
+import { EditTodoModal } from "../modals/EditTodoModal"
 import { useState } from "react"
 
 export const HomePage = () => {
     const[openAddModal, setOpenAddModal] = useState(false)
+    const[openEditModal, setOpenEditModal] = useState(false)
+    const[selectedTodo, setSelectedTodo] = useState(null)
 
     const handleOpenModalNewTodo = () => {
         setOpenAddModal(true)
@@ -20,13 +23,23 @@ export const HomePage = () => {
                     <AddTodoModal handleClose={() => setOpenAddModal(false)} />
                     : null
                 }
+                {openEditModal ?
+                    <EditTodoModal 
+                    data={selectedTodo}
+                    handleClose={() => {
+                        setOpenEditModal(false) 
+                        setSelectedTodo(null)
+                    }} 
+                    />
+                    : null
+                }
             </div>
             <div className="grid grid-cols-2">
                 <div>
-                    <TodoSection />
+                    <TodoSection setOpenEditModal={setOpenEditModal} setSelectedTodo={setSelectedTodo} />
                 </div>
                 <div>
-                    <TodoDoneSection />
+                    <TodoDoneSection setOpenEditModal={setOpenEditModal} setSelectedTodo={setSelectedTodo} />
                 </div>
             </div>
         </div>

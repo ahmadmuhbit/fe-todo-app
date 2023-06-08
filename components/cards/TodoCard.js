@@ -2,16 +2,18 @@ import { updateTodo } from "@/service/todo/todo.service"
 import Swal from "sweetalert2"
 import { mutate } from "swr"
 
-export const TodoCard = ({isDone = false, data = null, mutate}) => {
+export const TodoCard = ({ isDone = false, data = null, mutate, setSelectedTodo, setOpenEditModal }) => {
 
-    const handleEditTodo = () => {
-        // alert('melakukan edit todo')
-         Swal.fire({
-            title: 'Sukses!',
-            text: 'Melakukan edit todo',
-            icon: 'success',
-            confirmButtonText: 'Ok'
-        })
+    const handleEditTodo = (todoData) => {
+        setSelectedTodo(todoData)
+        setOpenEditModal(true)
+
+        //  Swal.fire({
+        //     title: 'Sukses!',
+        //     text: 'Melakukan edit todo',
+        //     icon: 'success',
+        //     confirmButtonText: 'Ok'
+        // })
     }
 
     const handleDoneTodo = () => {
@@ -80,7 +82,8 @@ export const TodoCard = ({isDone = false, data = null, mutate}) => {
                 {data?.note}
             </p>
             <div className="flex items-start justify-end gap-2 text-xs">
-                <button className="rounded-lg bg-amber-600 hover:bg-amber-700 text-white px-3 py-1" onClick={() => handleEditTodo()}>
+                <button className="rounded-lg bg-amber-600 hover:bg-amber-700 text-white px-3 py-1" 
+                onClick={() => handleEditTodo(data)}>
                     Edit
                 </button>
                 {isDone ? 
