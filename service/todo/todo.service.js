@@ -9,3 +9,8 @@ export const addTodo = async (data) => {
     const resp = await axiosIntstance.post(`/todos`, data)
     return resp?.data
 }
+
+export const deleteTodo = async (id) => {
+    const resp = await axiosIntstance.delete(`/todos/${id}`)
+    return resp?.data
+}

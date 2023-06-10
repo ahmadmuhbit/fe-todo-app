@@ -1,4 +1,5 @@
 import { updateTodo } from "@/service/todo/todo.service"
+import { deleteTodo } from "@/service/todo/todo.service"
 import Swal from "sweetalert2"
 import { mutate } from "swr"
 
@@ -7,16 +8,42 @@ export const TodoCard = ({ isDone = false, data = null, mutate, setSelectedTodo,
     const handleEditTodo = (todoData) => {
         setSelectedTodo(todoData)
         setOpenEditModal(true)
-
-        //  Swal.fire({
-        //     title: 'Sukses!',
-        //     text: 'Melakukan edit todo',
-        //     icon: 'success',
-        //     confirmButtonText: 'Ok'
-        // })
     }
 
-    const handleDoneTodo = () => {
+    const handleDeleteTodo = (todoId) => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteTodo(todoId)
+                .then(resp => {
+                    mutate()
+                    Swal.fire({
+                        title: 'Sukses!',
+                        text: resp?.message,
+                        icon: 'success',
+                        confirmButtonText: 'Ok'
+                    })
+                })
+                .catch(err => {
+                    Swal.fire({
+                        title: 'Gagal!',
+                        text: err?.response?.data?.message || err?.message,
+                        icon: 'error',
+                        confirmButtonText: 'Ok'
+                    })
+                })
+            }
+        }) 
+    }
+
+     const handleDoneTodo = () => {
         const payload = {
             name: data?.name,
             note: data?.note,
@@ -95,6 +122,10 @@ export const TodoCard = ({ isDone = false, data = null, mutate, setSelectedTodo,
                     Done
                 </button>
                 }
+                <button className="rounded-lg bg-slate-600 hover:bg-slate-700 text-white px-3 py-1" 
+                onClick={() => handleDeleteTodo(data?.id)}>
+                    Delete
+                </button>
             </div>
         </div>
     )
