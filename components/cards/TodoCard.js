@@ -1,7 +1,9 @@
 import { updateTodo } from "@/service/todo/todo.service"
 import { deleteTodo } from "@/service/todo/todo.service"
+import dayjs from "dayjs"
 import Swal from "sweetalert2"
 import { mutate } from "swr"
+import * as idId from 'dayjs/locale/id'
 
 export const TodoCard = ({ isDone = false, data = null, mutate, setSelectedTodo, setOpenEditModal }) => {
 
@@ -102,7 +104,7 @@ export const TodoCard = ({ isDone = false, data = null, mutate, setSelectedTodo,
                     {data?.name}
                 </div>
                 <div className="text-xs">
-                    {data?.created_at}
+                    {dayjs(data?.created_at).locale(idId).format('dddd, DD MMMM YYYY')}
                 </div>
             </div>
             <p className="rounded-lg bg-slate-100 p-3 text-sm italic">
